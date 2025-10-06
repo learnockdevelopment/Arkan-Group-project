@@ -1,14 +1,14 @@
 import { Button } from "@/components/ui/button"
 import { Play } from "lucide-react"
 
-export function HowItWorks() {
+export function HowItWorks( {title, description, titleClass, descriptionClass}: {title: string, description: string, titleClass: string, descriptionClass: string} ) {
   return (
     <section id="how-it-works" className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">How It Works?</h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto text-balance">
-            Discover how easy it is to start investing in real estate with Arkan Shares
+          <h2 className={`text-3xl md:text-4xl font-bold text-foreground mb-4 ${titleClass}`}>{title || "How It Works?" }</h2>
+          <p className={`text-lg text-muted-foreground max-w-2xl mx-auto text-balance ${descriptionClass}`}>
+            {description || "Discover how easy it is to start investing in real estate with Arkan Shares"}
           </p>
         </div>
 

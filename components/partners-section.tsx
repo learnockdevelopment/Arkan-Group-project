@@ -1,9 +1,9 @@
 export function PartnersSection() {
   const partners = [
-    { name: "Partner 1", logo: "/abstract-logo-1.png" },
-    { name: "Partner 2", logo: "/abstract-logo-geometric.png" },
-    { name: "Partner 3", logo: "/abstract-logo-design-3.png" },
-    { name: "Partner 4", logo: "/abstract-logo-4.png" },
+    { name: "Partner 1", logo: "/company1.jpg" },
+    { name: "Partner 2", logo: "/company2.jpg" },
+    { name: "Partner 3", logo: "/company3.jpg" },
+    { name: "Partner 4", logo: "/company4.jpg" },
   ]
 
   return (
@@ -23,7 +23,7 @@ export function PartnersSection() {
               <img
                 src={partner.logo || "/placeholder.svg"}
                 alt={partner.name}
-                className="max-h-12 w-auto opacity-60 hover:opacity-100 transition-opacity"
+                className="max-h-28 w-auto hover:opacity-100 transition-opacity"
               />
             </div>
           ))}

@@ -11,9 +11,7 @@ import HomePage from "@/components/pages/HomePage"
 export default function App() {
   return (
     <main className="min-h-screen">
-      <Navbar />
       <HomePage />
-      <Footer />
     </main>
   )
 }

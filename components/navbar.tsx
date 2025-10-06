@@ -3,17 +3,18 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Menu, X } from "lucide-react"
+import Link from "next/link"
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const navLinks = [
-    { name: "Home", href: "#" },
-    { name: "Explore", href: "#opportunities" },
-    { name: "How it works", href: "#how-it-works" },
-    { name: "Blogs", href: "#" },
-    { name: "Track Record", href: "#" },
-    { name: "Contact Us", href: "#" },
+    { name: "Home", href: "/" },
+    { name: "Explore", href: "/explore" },
+    { name: "How it works", href: "/how-it-works" },
+    { name: "Blogs", href: "/blog" },
+    // { name: "Track Record", href: "#" },
+    { name: "Contact Us", href: "/contact" },
   ]
 
   return (
@@ -42,12 +43,16 @@ export function Navbar() {
 
           {/* Desktop Buttons */}
           <div className="hidden md:flex items-center space-x-4">
-            <Button variant="outline" size="sm">
-              Sign in
-            </Button>
-            <Button className="bg-secondary text-secondary-foreground hover:bg-secondary/90" size="sm">
-              Invest now
-            </Button>
+            <Link href="/login">
+                <Button variant="outline" size="sm">
+                  Sign in
+                </Button>
+                </Link>
+                <Link href='/register'>
+                <Button className="bg-secondary text-secondary-foreground hover:bg-secondary/90" size="sm">
+                  Invest now
+                </Button>
+                </Link>
           </div>
 
           {/* Mobile menu button */}
@@ -73,12 +78,16 @@ export function Navbar() {
                 </a>
               ))}
               <div className="flex flex-col space-y-2 pt-4">
+                <Link href="/login">
                 <Button variant="outline" size="sm">
                   Sign in
                 </Button>
+                </Link>
+                <Link href='/register'>
                 <Button className="bg-secondary text-secondary-foreground hover:bg-secondary/90" size="sm">
                   Invest now
                 </Button>
+                </Link>
               </div>
             </div>
           </div>
