@@ -6,9 +6,9 @@ import './globals.css'
 import { Navbar } from '@/components/navbar'
 import { Footer } from '@/components/footer'
 export const metadata: Metadata = {
-  title: 'v0 App',
-  description: 'Created with v0',
-  generator: 'v0.app',
+  title: 'Arkan',
+  description: 'Created with learnock',
+  // generator: 'v0.app',
 }
 
 export default function RootLayout({
