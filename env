@@ -1,0 +1,28 @@
+# Database
+MONGODB_URI="mongodb+srv://learnockdevelopment_db_user:R3injViBrsVbYenX@cluster0.vtypvnt.mongodb.net/arkan-db?retryWrites=true&w=majority&appName=Cluster0"
+
+
+# JWT
+JWT_SECRET=your-super-secret-jwt-key-here
+
+
+PORT=3000
+
+
+# NextAuth
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=your-nextauth-secret-here
+
+# App Configuration
+NODE_ENV=development
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+
+
+
+# API Key Configuration
+API_KEY_ENABLED=true
+API_KEY=c542e686791fd09b7720e494c894bd42c5faa8a98f19754a9798ea96976c1a4c
+API_KEY_HEADER=x-api-key
+
+# Frontend API Key (for client-side requests)
+NEXT_PUBLIC_API_KEY=c542e686791fd09b7720e494c894bd42c5faa8a98f19754a9798ea96976c1a4c

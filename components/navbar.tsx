@@ -1,12 +1,12 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Menu, X } from "lucide-react"
-import Link from "next/link"
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Menu, X } from "lucide-react";
+import Link from "next/link";
 
 export function Navbar() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navLinks = [
     { name: "Home", href: "/" },
@@ -15,25 +15,25 @@ export function Navbar() {
     { name: "Blogs", href: "/blog" },
     // { name: "Track Record", href: "#" },
     { name: "Contact Us", href: "/contact" },
-  ]
+  ];
 
   return (
     <nav className="bg-white shadow-sm border-b border-border sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+        <div className="flex justify-between items-center h-20">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <h1 className="text-2xl font-bold text-primary">Arkan Shares</h1>
+            <img src="/arkan-logo.svg" className="w-44"/>
           </div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:block">
-            <div className="ml-10 flex items-baseline space-x-8">
+            <div className="ml-12 flex items-baseline space-x-10">
               {navLinks.map((link) => (
                 <a
                   key={link.name}
                   href={link.href}
-                  className="text-foreground hover:text-primary px-3 py-2 text-sm font-medium transition-colors"
+                  className="text-foreground hover:text-primary px-3 py-2 text-base font-medium transition-colors"
                 >
                   {link.name}
                 </a>
@@ -43,22 +43,33 @@ export function Navbar() {
 
           {/* Desktop Buttons */}
           <div className="hidden md:flex items-center space-x-4">
+            <Link href="/register">
+              <Button
+                className="bg-primary text-white hover:bg-primary/90"
+                size="lg"
+              >
+                Invest now
+              </Button>
+            </Link>
             <Link href="/login">
-                <Button variant="outline" size="sm">
-                  Sign in
-                </Button>
-                </Link>
-                <Link href='/register'>
-                <Button className="bg-secondary text-secondary-foreground hover:bg-secondary/90" size="sm">
-                  Invest now
-                </Button>
-                </Link>
+              <Button variant="outline" size="lg">
+                Sign in
+              </Button>
+            </Link>
           </div>
 
           {/* Mobile menu button */}
           <div className="md:hidden">
-            <Button variant="ghost" size="sm" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-              {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            >
+              {isMenuOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
             </Button>
           </div>
         </div>
@@ -79,14 +90,17 @@ export function Navbar() {
               ))}
               <div className="flex flex-col space-y-2 pt-4">
                 <Link href="/login">
-                <Button variant="outline" size="sm">
-                  Sign in
-                </Button>
+                  <Button variant="outline" size="sm">
+                    Sign in
+                  </Button>
                 </Link>
-                <Link href='/register'>
-                <Button className="bg-secondary text-secondary-foreground hover:bg-secondary/90" size="sm">
-                  Invest now
-                </Button>
+                <Link href="/register">
+                  <Button
+                    className="bg-secondary text-secondary-foreground hover:bg-secondary/90"
+                    size="sm"
+                  >
+                    Invest now
+                  </Button>
                 </Link>
               </div>
             </div>
@@ -94,5 +108,5 @@ export function Navbar() {
         )}
       </div>
     </nav>
-  )
+  );
 }
