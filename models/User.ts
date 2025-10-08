@@ -11,6 +11,7 @@ const userSchema = new Schema(
         passwordHash: { type: String, required: false, select: false },
         emailVerifiedAt: { type: Date },
         phoneVerifiedAt: { type: Date },
+        isVerified: { type: Boolean, default: false }, // ID verification status
         roleId: { type: Schema.Types.ObjectId, ref: "Role", required: false },
         avatarUrl: { type: String },
         walletId: { type: Schema.Types.ObjectId, ref: "Wallet" },
