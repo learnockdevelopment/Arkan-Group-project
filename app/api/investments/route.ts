@@ -22,6 +22,10 @@ const querySchema = z.object({
 
 // GET - Get user's investments
 export async function GET(request: NextRequest) {
+    // Check API key
+    const apiKeyResult = await withApiKey(request);
+    if (apiKeyResult) return apiKeyResult;
+
     const authResult = await withAuth(request);
     if (authResult.error) {
         return NextResponse.json(authResult.error, { status: authResult.status });
@@ -146,6 +150,10 @@ export async function GET(request: NextRequest) {
 
 // POST - Create new investment
 export async function POST(request: NextRequest) {
+    // Check API key
+    const apiKeyResult = await withApiKey(request);
+    if (apiKeyResult) return apiKeyResult;
+
     const authResult = await withAuth(request);
     if (authResult.error) {
         return NextResponse.json(authResult.error, { status: authResult.status });

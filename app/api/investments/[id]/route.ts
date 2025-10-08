@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/db";
 import { Investment, InvestmentStatus } from "@/models/Investment";
 import { withAuth } from "@/app/api/_utils/withAuth";
+import { withApiKey } from "@/middleware/apiKey";
 import { isValidObjectId } from "mongoose";
 
 interface RouteParams {
@@ -12,6 +13,10 @@ interface RouteParams {
 
 // GET - Get investment details
 export async function GET(request: NextRequest, { params }: RouteParams) {
+    // Check API key
+    const apiKeyResult = await withApiKey(request);
+    if (apiKeyResult) return apiKeyResult;
+
     const authResult = await withAuth(request);
     if (authResult.error) {
         return NextResponse.json(authResult.error, { status: authResult.status });
@@ -61,6 +66,10 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
 
 // PUT - Update investment (mainly for payment status)
 export async function PUT(request: NextRequest, { params }: RouteParams) {
+    // Check API key
+    const apiKeyResult = await withApiKey(request);
+    if (apiKeyResult) return apiKeyResult;
+
     const authResult = await withAuth(request);
     if (authResult.error) {
         return NextResponse.json(authResult.error, { status: authResult.status });
@@ -146,6 +155,10 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
 
 // DELETE - Cancel investment (only if no payments made)
 export async function DELETE(request: NextRequest, { params }: RouteParams) {
+    // Check API key
+    const apiKeyResult = await withApiKey(request);
+    if (apiKeyResult) return apiKeyResult;
+
     const authResult = await withAuth(request);
     if (authResult.error) {
         return NextResponse.json(authResult.error, { status: authResult.status });

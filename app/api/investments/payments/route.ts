@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/db";
 import { Investment, PaymentStatus } from "@/models/Investment";
 import { withAuth } from "@/app/api/_utils/withAuth";
+import { withApiKey } from "@/middleware/apiKey";
 import { z } from "zod";
 
 const paymentSchema = z.object({
@@ -15,6 +16,10 @@ const paymentSchema = z.object({
 
 // GET - Get payment schedule for user's investments
 export async function GET(request: NextRequest) {
+    // Check API key
+    const apiKeyResult = await withApiKey(request);
+    if (apiKeyResult) return apiKeyResult;
+
     const authResult = await withAuth(request);
     if (authResult.error) {
         return NextResponse.json(authResult.error, { status: authResult.status });
@@ -111,6 +116,10 @@ export async function GET(request: NextRequest) {
 
 // POST - Record a payment
 export async function POST(request: NextRequest) {
+    // Check API key
+    const apiKeyResult = await withApiKey(request);
+    if (apiKeyResult) return apiKeyResult;
+
     const authResult = await withAuth(request);
     if (authResult.error) {
         return NextResponse.json(authResult.error, { status: authResult.status });
