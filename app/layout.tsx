@@ -5,6 +5,7 @@ import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 import { Navbar } from '@/components/navbar'
 import { Footer } from '@/components/footer'
+import { PropertiesProvider } from '@/contexts/PropertiesContext'
 export const metadata: Metadata = {
   title: 'v0 App',
   description: 'Created with v0',
@@ -21,7 +22,9 @@ export default function RootLayout({
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable}`}>
       <Navbar />
 
-        {children}
+        <PropertiesProvider>
+          {children}
+        </PropertiesProvider>
         <Analytics />
       <Footer />
 

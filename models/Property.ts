@@ -1,5 +1,5 @@
 import mongoose, { Schema, InferSchemaType, Model } from "mongoose";
-
+import "./User"
 // Enums for property types and statuses
 export enum PropertyType {
     SINGLE = "single",

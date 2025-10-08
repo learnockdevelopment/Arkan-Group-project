@@ -8,7 +8,7 @@ import { Progress } from "@/components/ui/progress"
 import { InvestmentCard } from "./InvestmentCard"
 import { InvestmentDistribution } from "./InvestmentDistribution"
 import { UpcomingPayouts } from "./UpcomingPayouts"
-import { allProperties } from "@/app/data/properties"
+import { useProperties } from "@/contexts/PropertiesContext"
 
 // Empty state for Exited Investments tab
 
@@ -44,15 +44,16 @@ export function ExitedInvestments() {
     },
   ]
 
-  const featured = allProperties.slice(0, 3).map((p) => ({
+  const { properties } = useProperties()
+  const featured = properties.slice(0, 3).map((p) => ({
     id: p.id,
-    title: p.name,
-    location: p.location,
-    price: typeof p.price === "number" ? p.price : Number(p.price || 0),
+    title: (p as any).name || (p as any).title,
+    location: (p as any).location,
+    price: typeof (p as any).price === "number" ? (p as any).price : Number((p as any).price || 0),
     roi: 15, // static for demo
     duration: 20, // static for demo
     funded: false,
-    image: p.image,
+    image: (p as any).image,
     rating: 4.6,
     reviews: 128,
   }))

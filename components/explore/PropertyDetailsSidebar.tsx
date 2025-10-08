@@ -5,11 +5,21 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Info, Flame, MessageCircle } from "lucide-react";
 
-const PropertyDetailsSidebar: React.FC = () => {
+interface PropertyDetailsSidebarProps {
+  property?: any;
+}
+
+const PropertyDetailsSidebar: React.FC<PropertyDetailsSidebarProps> = ({ property }) => {
   const [shares, setShares] = useState(1);
 
+  const maxShares = property?.availableShares || 30;
+  const sharePrice = property?.sharePrice || 0;
+  const totalValue = property?.price || 0;
+  const roi = property?.roi || 0;
+  const deliveryDate = property?.deliveryDate;
+
   const handleIncrease = () => {
-    if (shares < 30) setShares((prev) => prev + 1);
+    if (shares < maxShares) setShares((prev) => prev + 1);
   };
 
   const handleDecrease = () => {
@@ -25,11 +35,11 @@ const PropertyDetailsSidebar: React.FC = () => {
             Join the waitlist for priority access
           </h3>
           <p className="bg-white/20 text-white/90 text-xs rounded-full px-3 py-1 mb-4">
-            Available on Tuesday, September 10 at 2:00 PM
+            {property?.status === "Available" ? "Available Now" : "Coming Soon"}
           </p>
 
           <p className="text-xs mb-2 flex items-center gap-1 text-white/90">
-            <Flame className="w-4 h-4 text-yellow-400" /> 30 shares left
+            <Flame className="w-4 h-4 text-yellow-400" /> {maxShares.toLocaleString()} shares left
           </p>
 
           <div className="flex items-center justify-center gap-3 mb-4">
@@ -74,15 +84,19 @@ const PropertyDetailsSidebar: React.FC = () => {
           <div className="space-y-2 text-gray-700 text-sm">
             <div className="flex justify-between">
               <span>Property value</span>
-              <span className="font-semibold">23,326,786 EGP</span>
+              <span className="font-semibold">{totalValue ? (totalValue ).toFixed(1) + ' EGP' : 'N/A'}</span>
             </div>
             <div className="flex justify-between">
-              <span>Unit price</span>
-              <span>22,057,701 EGP</span>
+              <span>Share price</span>
+              <span>{sharePrice ? sharePrice.toLocaleString() + ' EGP' : 'N/A'}</span>
             </div>
             <div className="flex justify-between">
-              <span>Maintenance</span>
-              <span>1,169,776 EGP</span>
+              <span>Expected ROI</span>
+              <span>{roi ? roi + '%' : 'N/A'}</span>
+            </div>
+            <div className="flex justify-between">
+              <span>Total shares</span>
+              <span>{property?.totalShares ? property.totalShares.toLocaleString() : 'N/A'}</span>
             </div>
           </div>
 
@@ -93,7 +107,14 @@ const PropertyDetailsSidebar: React.FC = () => {
           <div className="border-t border-gray-200 mt-4 pt-3 text-sm">
             <p>
               <span className="font-semibold">Estimated exit date:</span>{" "}
-              At delivery in <b>May 2029</b>, or at <b>80% ROI</b>
+              {deliveryDate ? (
+                <>At delivery in <b>{new Date(deliveryDate).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</b></>
+              ) : (
+                'Contact for timeline'
+              )}
+              {roi ? (
+                <>, or at <b>{roi}% ROI</b></>
+              ) : null}
             </p>
           </div>
         </CardContent>

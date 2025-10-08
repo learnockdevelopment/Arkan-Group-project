@@ -8,10 +8,11 @@ import { Progress } from "@/components/ui/progress"
 import { InvestmentDistribution } from "./InvestmentDistribution"
 import { UpcomingPayouts } from "./UpcomingPayouts"
 import { ExpandPortfolio } from "./ExpandPortfolio"
-import { allProperties } from "@/app/data/properties"
+import { useProperties } from "@/contexts/PropertiesContext"
 
 export function CurrentInvestments() {
-  const items = allProperties.slice(0, 3)
+  const { properties } = useProperties()
+  const items = properties.slice(0, 3)
 
   return (
     <div className="space-y-10">
@@ -20,8 +21,8 @@ export function CurrentInvestments() {
           <Card key={p.id} className="rounded-xl overflow-hidden border shadow-sm">
             <Link href={`/explore/${p.id}`} className="relative block">
               <Image
-                src={p.image}
-                alt={p.name}
+                src={(p as any).image || "/placeholder.jpg"}
+                alt={(p as any).name || (p as any).title || "Property"}
                 width={800}
                 height={600}
                 className="h-56 w-full object-cover"
@@ -33,10 +34,10 @@ export function CurrentInvestments() {
             <CardContent className="p-4 space-y-3 text-sm">
               <div className="flex items-start justify-between">
                 <div>
-                  <p className="font-medium text-gray-900 line-clamp-1">{p.name}</p>
-                  <p className="text-xs text-gray-500 line-clamp-1">{p.location}</p>
+                  <p className="font-medium text-gray-900 line-clamp-1">{(p as any).name || (p as any).title}</p>
+                  <p className="text-xs text-gray-500 line-clamp-1">{(p as any).location}</p>
                 </div>
-                <p className="text-xs text-gray-600">${Number(p.price).toLocaleString()}</p>
+                <p className="text-xs text-gray-600">${Number(p.price || 0).toLocaleString()}</p>
               </div>
 
               <div>

@@ -17,10 +17,10 @@ interface Property {
 }
 
 const PropertyCard = ({ property }: { property: Property }) => {
-  const { title, location, price, roi, duration, image, funded, rating, reviews } = property;
+  const { title, location, price, roi, duration, image, funded, rating, reviews, id } = property;
 
   return (
-    <div className="flex flex-col sm:flex-row bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+    <div className="flex flex-col sm:flex-row bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow h-[250px]">
       {/* Image Section */}
       <div className="relative sm:w-1/3 w-full">
         <Image
@@ -74,7 +74,12 @@ const PropertyCard = ({ property }: { property: Property }) => {
         <div className="flex justify-between items-center mt-4">
           <span className="font-bold text-lg">${price.toLocaleString()}</span>
           <Link href={`/explore/${property.id}`}>
-          <Button className="rounded-2xl !px-6 !py-3 text-base h-auto w-auto"> View Details <ArrowRight className="!w-5 !h-5" /></Button>
+          <Button 
+            className="rounded-2xl !px-6 !py-3 text-base h-auto w-auto"
+            onClick={() => console.log('Navigating to property:', property.id, 'URL:', `/explore/${property.id}`)}
+          > 
+            View Details <ArrowRight className="!w-5 !h-5" />
+          </Button>
             </Link>
         </div>
       </div>
