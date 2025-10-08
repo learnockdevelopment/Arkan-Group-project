@@ -26,6 +26,7 @@ const querySchema = z.object({
 });
 
 export async function GET(request: NextRequest) {
+    console.log("🌱 Getting properties...");
     // Check API key
     const apiKeyResult = await withApiKey(request);
     if (apiKeyResult) return apiKeyResult;

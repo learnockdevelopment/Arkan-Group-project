@@ -1,0 +1,74 @@
+# Test New Seeding APIs
+# Use with REST Client extension in VS Code
+
+### Variables
+@baseUrl = http://localhost:3000
+@adminToken = YOUR_ADMIN_TOKEN_HERE
+@apiKey = YOUR_API_KEY_HERE
+
+### Check Database Status Before Seeding
+GET {{baseUrl}}/api/admin/seed-all
+x-api-key: {{apiKey}}
+Authorization: Bearer {{adminToken}}
+
+### Seed All Data (Properties, Investments, Blogs, Contacts)
+POST {{baseUrl}}/api/admin/seed-all
+x-api-key: {{apiKey}}
+Authorization: Bearer {{adminToken}}
+
+### Check Blog Seeding Status
+GET {{baseUrl}}/api/admin/seed-blogs
+x-api-key: {{apiKey}}
+Authorization: Bearer {{adminToken}}
+
+### Seed Only Blogs
+POST {{baseUrl}}/api/admin/seed-blogs
+x-api-key: {{apiKey}}
+Authorization: Bearer {{adminToken}}
+
+### Check Contact Seeding Status
+GET {{baseUrl}}/api/admin/seed-contacts
+x-api-key: {{apiKey}}
+Authorization: Bearer {{adminToken}}
+
+### Seed Only Contacts
+POST {{baseUrl}}/api/admin/seed-contacts
+x-api-key: {{apiKey}}
+Authorization: Bearer {{adminToken}}
+
+### Test Blog Listing (Public)
+GET {{baseUrl}}/api/blogs
+x-api-key: {{apiKey}}
+
+### Test Featured Blogs
+GET {{baseUrl}}/api/blogs/featured
+x-api-key: {{apiKey}}
+
+### Test Blog Search
+GET {{baseUrl}}/api/blogs?search=investment&category=real_estate
+x-api-key: {{apiKey}}
+
+### Test Contact Form Submission (Public)
+POST {{baseUrl}}/api/contact
+x-api-key: {{apiKey}}
+Content-Type: application/json
+
+{
+  "firstName": "Test",
+  "lastName": "User",
+  "email": "test@example.com",
+  "phone": "+201234567890",
+  "subject": "Test Contact Message",
+  "message": "This is a test message to verify the contact form is working properly.",
+  "category": "general_inquiry"
+}
+
+### Test Admin Contact Management
+GET {{baseUrl}}/api/admin/contacts
+x-api-key: {{apiKey}}
+Authorization: Bearer {{adminToken}}
+
+### Test Admin Blog Management
+GET {{baseUrl}}/api/admin/blogs
+x-api-key: {{apiKey}}
+Authorization: Bearer {{adminToken}}

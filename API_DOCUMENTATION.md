@@ -1128,6 +1128,813 @@ shareInstallment = Math.round((sharePrice - shareDownPayment) / numberOfInstallm
 
 ---
 
+## 🔐 Profile Management APIs (Extended)
+
+### Change PIN
+```http
+POST /api/profile/change-pin
+```
+
+**Headers:**
+```
+x-api-key: <API_KEY>
+Authorization: Bearer <jwt_token>
+```
+
+**Request Body:**
+```json
+{
+  "currentPin": "123456",
+  "newPin": "789012"
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "PIN changed successfully"
+}
+```
+
+### ID Verification
+
+#### Submit ID Verification
+```http
+POST /api/profile/id-verification
+```
+
+**Headers:**
+```
+x-api-key: <API_KEY>
+Authorization: Bearer <jwt_token>
+```
+
+**Request Body:**
+```json
+{
+  "frontImageUrl": "https://example.com/id-front.jpg",
+  "backImageUrl": "https://example.com/id-back.jpg",
+  "idType": "national_id",
+  "idNumber": "12345678901234"
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "ID verification submitted successfully. Please wait for admin review.",
+  "data": {
+    "verificationId": "verification_id",
+    "status": "pending",
+    "submittedAt": "2024-10-08T10:30:00Z"
+  }
+}
+```
+
+#### Get Verification Status
+```http
+GET /api/profile/id-verification
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "data": {
+    "isVerified": false,
+    "latestVerification": {
+      "status": "pending",
+      "submittedAt": "2024-10-08T10:30:00Z",
+      "reviewedAt": null,
+      "rejectionReason": null
+    }
+  }
+}
+```
+
+---
+
+## 💳 Wallet Extended APIs
+
+### Withdraw Funds
+```http
+POST /api/wallet/withdraw
+```
+
+**Headers:**
+```
+x-api-key: <API_KEY>
+Authorization: Bearer <jwt_token>
+```
+
+**Request Body:**
+```json
+{
+  "amount": 1000,
+  "cardId": "card_id_here",
+  "description": "Withdrawal to bank account"
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "Withdrawal request processed successfully",
+  "data": {
+    "transactionId": "WD-1728384000-abc123",
+    "amount": 1000,
+    "newBalance": 4000,
+    "status": "completed",
+    "processedAt": "2024-10-08T10:30:00Z"
+  }
+}
+```
+
+### Top-up Wallet
+```http
+POST /api/wallet/topup
+```
+
+**Headers:**
+```
+x-api-key: <API_KEY>
+Authorization: Bearer <jwt_token>
+```
+
+**Request Body:**
+```json
+{
+  "amount": 500,
+  "cardId": "card_id_here",
+  "description": "Top-up from credit card"
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "Top-up processed successfully",
+  "data": {
+    "transactionId": "TP-1728384000-xyz789",
+    "amount": 500,
+    "newBalance": 5500,
+    "status": "completed",
+    "processedAt": "2024-10-08T10:30:00Z"
+  }
+}
+```
+
+---
+
+## 💳 Card Management APIs
+
+### Get User Cards
+```http
+GET /api/cards
+```
+
+**Headers:**
+```
+x-api-key: <API_KEY>
+Authorization: Bearer <jwt_token>
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "id": "card_id",
+      "maskedCardNumber": "**** **** **** 1234",
+      "cardHolderName": "John Doe",
+      "expiryDate": "12/25",
+      "cardType": "visa",
+      "cardBrand": "Visa",
+      "nickname": "Main Card",
+      "isDefault": true,
+      "isActive": true
+    }
+  ]
+}
+```
+
+### Add New Card
+```http
+POST /api/cards
+```
+
+**Headers:**
+```
+x-api-key: <API_KEY>
+Authorization: Bearer <jwt_token>
+```
+
+**Request Body:**
+```json
+{
+  "cardNumber": "4111111111111111",
+  "cardHolderName": "John Doe",
+  "expiryMonth": 12,
+  "expiryYear": 2025,
+  "cvv": "123",
+  "nickname": "Business Card",
+  "billingAddress": {
+    "street": "123 Main St",
+    "city": "Cairo",
+    "state": "Cairo",
+    "zipCode": "12345",
+    "country": "EG"
+  }
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "Card added successfully",
+  "data": {
+    "id": "new_card_id",
+    "maskedCardNumber": "**** **** **** 1111",
+    "cardHolderName": "John Doe",
+    "expiryDate": "12/25",
+    "cardType": "visa",
+    "isDefault": false
+  }
+}
+```
+
+### Get Card Details
+```http
+GET /api/cards/{id}
+```
+
+### Update Card
+```http
+PUT /api/cards/{id}
+```
+
+**Request Body:**
+```json
+{
+  "nickname": "Updated Card Name",
+  "billingAddress": {
+    "street": "456 New St",
+    "city": "Alexandria"
+  }
+}
+```
+
+### Delete Card
+```http
+DELETE /api/cards/{id}
+```
+
+### Set Default Card
+```http
+POST /api/cards/{id}/set-default
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "Card set as default successfully",
+  "data": {
+    "id": "card_id",
+    "maskedCardNumber": "**** **** **** 1234",
+    "isDefault": true
+  }
+}
+```
+
+---
+
+## 📝 Blog APIs
+
+### Public Blog APIs
+
+#### List Blogs
+```http
+GET /api/blogs
+```
+
+**Headers:**
+```
+x-api-key: <API_KEY>
+```
+
+**Query Parameters:**
+- `page` (number): Page number (default: 1)
+- `limit` (number): Items per page (default: 10, max: 20)
+- `category` (string): Filter by category ('real_estate', 'investment', 'market_news', 'tips', 'company_news', 'general')
+- `featured` (boolean): Show only featured blogs
+- `search` (string): Search in title, excerpt, content, tags
+- `sortBy` (string): Sort field ('publishedAt', 'viewCount', 'likeCount')
+- `sortOrder` (string): Sort direction ('asc', 'desc')
+
+**Response:**
+```json
+{
+  "success": true,
+  "data": {
+    "blogs": [
+      {
+        "id": "blog_id",
+        "title": "The Future of Real Estate Investment in Egypt",
+        "slug": "future-real-estate-investment-egypt",
+        "excerpt": "Discover the emerging trends and opportunities...",
+        "featuredImage": "https://example.com/image.jpg",
+        "category": "real_estate",
+        "tags": ["real estate", "egypt", "investment"],
+        "publishedAt": "2024-10-08T10:30:00Z",
+        "readingTime": 5,
+        "viewCount": 150,
+        "likeCount": 25,
+        "author": {
+          "firstName": "Admin",
+          "lastName": "User",
+          "avatarUrl": "https://example.com/avatar.jpg"
+        }
+      }
+    ],
+    "pagination": {
+      "currentPage": 1,
+      "totalPages": 3,
+      "totalCount": 25,
+      "limit": 10
+    }
+  }
+}
+```
+
+#### Get Blog by Slug
+```http
+GET /api/blogs/{slug}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "data": {
+    "id": "blog_id",
+    "title": "Blog Title",
+    "slug": "blog-slug",
+    "content": "<h2>Full HTML content...</h2>",
+    "featuredImage": "https://example.com/image.jpg",
+    "category": "real_estate",
+    "tags": ["tag1", "tag2"],
+    "publishedAt": "2024-10-08T10:30:00Z",
+    "readingTime": 5,
+    "viewCount": 151,
+    "author": {
+      "firstName": "Admin",
+      "lastName": "User"
+    },
+    "relatedPosts": [
+      {
+        "title": "Related Post",
+        "slug": "related-post",
+        "excerpt": "Related post excerpt...",
+        "featuredImage": "https://example.com/related.jpg"
+      }
+    ]
+  }
+}
+```
+
+#### Get Featured Blogs
+```http
+GET /api/blogs/featured
+```
+
+**Query Parameters:**
+- `limit` (number): Max items (default: 5, max: 10)
+
+### Admin Blog Management
+
+#### List All Blogs (Admin)
+```http
+GET /api/admin/blogs
+```
+
+**Headers:**
+```
+x-api-key: <API_KEY>
+Authorization: Bearer <admin_jwt_token>
+```
+
+**Query Parameters:**
+- `page`, `limit`: Pagination
+- `status` (string): Filter by status ('draft', 'published', 'archived', 'all')
+- `category`, `authorId`: Filters
+- `search`: Search term
+- `sortBy`, `sortOrder`: Sorting
+
+#### Create Blog (Admin)
+```http
+POST /api/admin/blogs
+```
+
+**Request Body:**
+```json
+{
+  "title": "New Blog Post",
+  "excerpt": "Short description of the blog post...",
+  "content": "<h2>Full HTML content of the blog post...</h2>",
+  "featuredImage": "https://example.com/featured.jpg",
+  "images": ["https://example.com/img1.jpg"],
+  "category": "real_estate",
+  "tags": ["real estate", "investment"],
+  "status": "published",
+  "metaTitle": "SEO Title",
+  "metaDescription": "SEO Description",
+  "keywords": ["keyword1", "keyword2"],
+  "isFeatured": true,
+  "commentsEnabled": true
+}
+```
+
+#### Get Blog Details (Admin)
+```http
+GET /api/admin/blogs/{id}
+```
+
+#### Update Blog (Admin)
+```http
+PUT /api/admin/blogs/{id}
+```
+
+#### Delete Blog (Admin)
+```http
+DELETE /api/admin/blogs/{id}
+```
+
+---
+
+## 📞 Contact APIs
+
+### Submit Contact Form (Public)
+```http
+POST /api/contact
+```
+
+**Headers:**
+```
+x-api-key: <API_KEY>
+```
+
+**Request Body:**
+```json
+{
+  "firstName": "John",
+  "lastName": "Doe",
+  "email": "john@example.com",
+  "phone": "+1234567890",
+  "subject": "Investment Question",
+  "message": "I have a question about property investments...",
+  "category": "investment_question"
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "Your message has been sent successfully. We'll get back to you soon!",
+  "data": {
+    "contactId": "contact_id",
+    "submittedAt": "2024-10-08T10:30:00Z"
+  }
+}
+```
+
+### Admin Contact Management
+
+#### List All Contacts (Admin)
+```http
+GET /api/admin/contacts
+```
+
+**Headers:**
+```
+x-api-key: <API_KEY>
+Authorization: Bearer <admin_jwt_token>
+```
+
+**Query Parameters:**
+- `page`, `limit`: Pagination
+- `status` (string): Filter by status ('new', 'in_progress', 'resolved', 'closed', 'all')
+- `category` (string): Filter by category
+- `priority` (string): Filter by priority ('low', 'medium', 'high', 'urgent')
+- `assignedTo` (string): Filter by assigned admin ('unassigned' for unassigned contacts)
+- `search`: Search term
+- `sortBy`, `sortOrder`: Sorting
+
+**Response:**
+```json
+{
+  "success": true,
+  "data": {
+    "contacts": [
+      {
+        "id": "contact_id",
+        "firstName": "John",
+        "lastName": "Doe",
+        "email": "john@example.com",
+        "phone": "+1234567890",
+        "subject": "Investment Question",
+        "category": "investment_question",
+        "status": "new",
+        "priority": "medium",
+        "createdAt": "2024-10-08T10:30:00Z",
+        "assignedTo": null,
+        "user": {
+          "firstName": "John",
+          "lastName": "Doe",
+          "email": "john@example.com"
+        }
+      }
+    ],
+    "pagination": {
+      "currentPage": 1,
+      "totalPages": 5,
+      "totalCount": 50
+    },
+    "stats": {
+      "new": 15,
+      "in_progress": 20,
+      "resolved": 10,
+      "closed": 5
+    }
+  }
+}
+```
+
+#### Get Contact Details (Admin)
+```http
+GET /api/admin/contacts/{id}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "data": {
+    "id": "contact_id",
+    "firstName": "John",
+    "lastName": "Doe",
+    "email": "john@example.com",
+    "phone": "+1234567890",
+    "subject": "Investment Question",
+    "message": "Full message content...",
+    "category": "investment_question",
+    "status": "in_progress",
+    "priority": "medium",
+    "assignedTo": {
+      "firstName": "Admin",
+      "lastName": "User",
+      "email": "admin@arkan.com"
+    },
+    "adminResponse": "Thank you for your question...",
+    "responseDate": "2024-10-08T11:00:00Z",
+    "internalNotes": [
+      {
+        "note": "User seems genuinely interested",
+        "addedBy": {
+          "firstName": "Admin",
+          "lastName": "User"
+        },
+        "addedAt": "2024-10-08T11:00:00Z"
+      }
+    ],
+    "createdAt": "2024-10-08T10:30:00Z"
+  }
+}
+```
+
+#### Update Contact (Admin)
+```http
+PUT /api/admin/contacts/{id}
+```
+
+**Request Body:**
+```json
+{
+  "status": "in_progress",
+  "priority": "high",
+  "assignedTo": "admin_user_id",
+  "adminResponse": "Thank you for contacting us. I'll help you with your question...",
+  "internalNote": "User requires follow-up call",
+  "followUpRequired": true,
+  "followUpDate": "2024-10-10T10:00:00Z"
+}
+```
+
+#### Delete Contact (Admin)
+```http
+DELETE /api/admin/contacts/{id}
+```
+
+---
+
+## 🆔 ID Verification Management (Admin)
+
+### List ID Verification Requests
+```http
+GET /api/admin/id-verifications
+```
+
+**Headers:**
+```
+x-api-key: <API_KEY>
+Authorization: Bearer <admin_jwt_token>
+```
+
+**Query Parameters:**
+- `page`, `limit`: Pagination
+- `status` (string): Filter by status ('pending', 'approved', 'rejected', 'all')
+- `sortBy`, `sortOrder`: Sorting
+
+**Response:**
+```json
+{
+  "success": true,
+  "data": {
+    "verifications": [
+      {
+        "id": "verification_id",
+        "userId": {
+          "firstName": "John",
+          "lastName": "Doe",
+          "email": "john@example.com",
+          "phone": "+1234567890"
+        },
+        "frontImageUrl": "https://example.com/front.jpg",
+        "backImageUrl": "https://example.com/back.jpg",
+        "idType": "national_id",
+        "status": "pending",
+        "submittedAt": "2024-10-08T10:30:00Z"
+      }
+    ],
+    "pagination": {
+      "currentPage": 1,
+      "totalPages": 2,
+      "totalCount": 15
+    }
+  }
+}
+```
+
+### Review ID Verification
+```http
+PUT /api/admin/id-verifications/{id}
+```
+
+**Request Body:**
+```json
+{
+  "action": "approve"
+}
+```
+
+**Or for rejection:**
+```json
+{
+  "action": "reject",
+  "rejectionReason": "Document quality is poor, please resubmit with clearer images"
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "ID verification approved successfully",
+  "data": {
+    "verificationId": "verification_id",
+    "status": "approved",
+    "reviewedAt": "2024-10-08T11:00:00Z"
+  }
+}
+```
+
+### Get Verification Details
+```http
+GET /api/admin/id-verifications/{id}
+```
+
+---
+
+## 🌱 Seeding APIs (Admin)
+
+### Seed All Data
+```http
+POST /api/admin/seed-all
+```
+
+**Headers:**
+```
+x-api-key: <API_KEY>
+Authorization: Bearer <admin_jwt_token>
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "Database seeded successfully with all data!",
+  "data": {
+    "properties": {
+      "singleProperties": 3,
+      "projects": 2,
+      "bundles": 2,
+      "totalProperties": 7
+    },
+    "investments": {
+      "investorsCreated": 5,
+      "investmentsCreated": 12
+    },
+    "blogs": {
+      "blogsCreated": 7,
+      "publishedBlogs": 6,
+      "featuredBlogs": 3
+    },
+    "contacts": {
+      "contactsCreated": 9,
+      "statusBreakdown": {
+        "new": 3,
+        "inProgress": 3,
+        "resolved": 2,
+        "closed": 1
+      }
+    }
+  }
+}
+```
+
+### Seed Individual Components
+
+#### Seed Properties Only
+```http
+POST /api/admin/seed-properties
+```
+
+#### Seed Blogs Only
+```http
+POST /api/admin/seed-blogs
+```
+
+#### Seed Contacts Only
+```http
+POST /api/admin/seed-contacts
+```
+
+#### Check Seeding Status
+```http
+GET /api/admin/seed-all
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "data": {
+    "properties": {
+      "total": 7,
+      "single": 3,
+      "projects": 2,
+      "bundles": 2
+    },
+    "investments": {
+      "total": 12,
+      "active": 10
+    },
+    "blogs": {
+      "total": 7,
+      "published": 6
+    },
+    "contacts": {
+      "total": 9,
+      "new": 3
+    },
+    "users": {
+      "total": 8
+    },
+    "seedingRecommended": false,
+    "message": "Database contains 7 properties, 12 investments, 7 blogs, and 9 contacts."
+  }
+}
+```
+
+---
+
 ## 🧪 Testing Examples
 
 ### Test Property Listing
@@ -1160,6 +1967,87 @@ curl -X POST "http://localhost:3000/api/admin/properties" \
     "advancement": 25,
     "totalShares": 100
   }'
+```
+
+### Test Change PIN
+```bash
+curl -X POST "http://localhost:3000/api/profile/change-pin" \
+  -H "x-api-key: your-api-key" \
+  -H "Authorization: Bearer user-jwt-token" \
+  -H "Content-Type: application/json" \
+  -d '{"currentPin": "123456", "newPin": "789012"}'
+```
+
+### Test ID Verification
+```bash
+curl -X POST "http://localhost:3000/api/profile/id-verification" \
+  -H "x-api-key: your-api-key" \
+  -H "Authorization: Bearer user-jwt-token" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "frontImageUrl": "https://example.com/id-front.jpg",
+    "backImageUrl": "https://example.com/id-back.jpg",
+    "idType": "national_id"
+  }'
+```
+
+### Test Wallet Top-up
+```bash
+curl -X POST "http://localhost:3000/api/wallet/topup" \
+  -H "x-api-key: your-api-key" \
+  -H "Authorization: Bearer user-jwt-token" \
+  -H "Content-Type: application/json" \
+  -d '{"amount": 500, "cardId": "card-id"}'
+```
+
+### Test Add Card
+```bash
+curl -X POST "http://localhost:3000/api/cards" \
+  -H "x-api-key: your-api-key" \
+  -H "Authorization: Bearer user-jwt-token" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "cardNumber": "4111111111111111",
+    "cardHolderName": "John Doe",
+    "expiryMonth": 12,
+    "expiryYear": 2025,
+    "cvv": "123"
+  }'
+```
+
+### Test Contact Form
+```bash
+curl -X POST "http://localhost:3000/api/contact" \
+  -H "x-api-key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "firstName": "John",
+    "lastName": "Doe",
+    "email": "john@example.com",
+    "phone": "+1234567890",
+    "subject": "Investment Question",
+    "message": "I have a question about property investments...",
+    "category": "investment_question"
+  }'
+```
+
+### Test Blog Listing
+```bash
+curl -X GET "http://localhost:3000/api/blogs?category=real_estate&featured=true" \
+  -H "x-api-key: your-api-key"
+```
+
+### Test Seeding
+```bash
+# Check database status
+curl -X GET "http://localhost:3000/api/admin/seed-all" \
+  -H "x-api-key: your-api-key" \
+  -H "Authorization: Bearer admin-jwt-token"
+
+# Seed all data
+curl -X POST "http://localhost:3000/api/admin/seed-all" \
+  -H "x-api-key: your-api-key" \
+  -H "Authorization: Bearer admin-jwt-token"
 ```
 
 ---
