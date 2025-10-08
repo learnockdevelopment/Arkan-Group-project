@@ -1,0 +1,86 @@
+# Test API Calls for Property System
+# Use with REST Client extension in VS Code or similar tools
+
+### Variables
+@baseUrl = http://localhost:3000
+@adminToken = YOUR_ADMIN_TOKEN_HERE
+@userToken = YOUR_USER_TOKEN_HERE
+
+### Health Check
+GET {{baseUrl}}/api/health
+
+### Check Database Status (Admin required)
+GET {{baseUrl}}/api/admin/seed-all
+Authorization: Bearer {{adminToken}}
+
+### Seed All Data (Admin required)
+POST {{baseUrl}}/api/admin/seed-all
+Authorization: Bearer {{adminToken}}
+
+### Get All Properties (Public)
+GET {{baseUrl}}/api/properties
+
+### Get Properties by Type - Single
+GET {{baseUrl}}/api/properties?type=single
+
+### Get Properties by Type - Project  
+GET {{baseUrl}}/api/properties?type=project
+
+### Get Properties by Type - Bundle
+GET {{baseUrl}}/api/properties?type=bundle
+
+### Get Featured Properties
+GET {{baseUrl}}/api/properties/featured
+
+### Search Properties
+GET {{baseUrl}}/api/properties/search?q=villa
+
+### Filter Properties by Price Range
+GET {{baseUrl}}/api/properties?minPrice=1000000&maxPrice=5000000
+
+### Filter Properties by ROI
+GET {{baseUrl}}/api/properties?minRoi=15&maxRoi=25
+
+### Filter Available Properties Only
+GET {{baseUrl}}/api/properties?available=true
+
+### Get Property Details (replace with actual property ID)
+GET {{baseUrl}}/api/properties/PROPERTY_ID_HERE
+
+### Calculate Investment (replace with actual property ID)
+POST {{baseUrl}}/api/properties/PROPERTY_ID_HERE
+Content-Type: application/json
+
+{
+  "shares": 5
+}
+
+### Get User Investments (User authentication required)
+GET {{baseUrl}}/api/investments
+Authorization: Bearer {{userToken}}
+
+### Create Investment (User authentication required, replace with actual property ID)
+POST {{baseUrl}}/api/investments
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+{
+  "propertyId": "PROPERTY_ID_HERE",
+  "sharesInvested": 3
+}
+
+### Get Payment Schedule (User authentication required)
+GET {{baseUrl}}/api/investments/payments?status=pending
+Authorization: Bearer {{userToken}}
+
+### Admin - Get All Properties
+GET {{baseUrl}}/api/admin/properties
+Authorization: Bearer {{adminToken}}
+
+### Admin - Get Analytics
+GET {{baseUrl}}/api/analytics/properties
+Authorization: Bearer {{adminToken}}
+
+### Owner - Get My Properties (Owner authentication required)
+GET {{baseUrl}}/api/owner/properties
+Authorization: Bearer {{adminToken}}
