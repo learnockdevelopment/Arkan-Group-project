@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import SectionCard from "@/components/account/SectionCard";
 
+
 export default function Page() {
   return (
     <SectionCard title="Personal Information">
